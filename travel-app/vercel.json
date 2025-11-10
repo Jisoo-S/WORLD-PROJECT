@@ -1,10 +1,11 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "framework": "create-react-app",
+  "buildCommand": "cd travel-app && npm ci && npm run build",
+  "outputDirectory": "travel-app/build",
+  "installCommand": "cd travel-app && npm ci",
+  "framework": null,
   "rewrites": [
     {
-      "source": "/((?!static/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
