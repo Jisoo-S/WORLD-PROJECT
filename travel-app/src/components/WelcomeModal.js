@@ -8,7 +8,6 @@ const WelcomeModal = ({ show, onClose, onSignIn }) => {
       <div 
         className="relative w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-white/10 overflow-hidden"
         style={{
-          maxHeight: '90vh',
           maxHeight: '90dvh'
         }}
       >
@@ -19,7 +18,7 @@ const WelcomeModal = ({ show, onClose, onSignIn }) => {
         </div>
 
         {/* 컨텐츠 */}
-        <div className="relative p-6 sm:p-8 overflow-y-auto" style={{ maxHeight: '90vh', maxHeight: '90dvh' }}>
+        <div className="relative p-6 sm:p-8 overflow-y-auto" style={{ maxHeight: '90dvh' }}>
           {/* X 버튼 */}
           <button
             onClick={onClose}
@@ -97,4 +96,3 @@ const WelcomeModal = ({ show, onClose, onSignIn }) => {
 };
 
 export default WelcomeModal;
-

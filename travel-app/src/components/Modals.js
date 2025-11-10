@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { countryData } from '../data/countryData';
-import ConfirmModal from './ConfirmModal';
 
 export const AddTravelModal = ({ 
   showAddTravel, 
@@ -87,6 +86,9 @@ export const AddTravelModal = ({
       case 'Escape':
         setShowDropdown(false);
         setSelectedIndex(-1);
+        break;
+      default:
+        // do nothing
         break;
     }
   };
