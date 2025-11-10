@@ -1,8 +1,12 @@
 {
   "buildCommand": "cd travel-app && npm install && npm run build",
   "outputDirectory": "travel-app/build",
+  "installCommand": "cd travel-app && npm install",
   "framework": null,
-  "env": {
-    "PUBLIC_URL": "/"
-  }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
