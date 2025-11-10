@@ -1,7 +1,7 @@
 {
   "buildCommand": "cd travel-app && npm ci && npm run build",
   "outputDirectory": "travel-app/build",
-  "installCommand": "cd travel-app && npm ci",
+  "installCommand": "cd travel-app && npm install",
   "framework": null,
   "rewrites": [
     {
