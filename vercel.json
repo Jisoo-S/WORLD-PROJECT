@@ -1,8 +1,18 @@
 {
-  "buildCommand": "cd travel-app && npm install && npm run build",
-  "outputDirectory": "travel-app/build",
-  "framework": null,
-  "env": {
-    "PUBLIC_URL": "/"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "travel-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/travel-app/$1"
+    }
+  ]
 }
