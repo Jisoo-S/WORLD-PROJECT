@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Globe from 'globe.gl';
 import { countryData, getVisitStyle, getGlobeTextures } from './data/countryData';
 import LoadingScreen from './components/LoadingScreen';
@@ -296,7 +296,7 @@ const UltraRealisticGlobe = () => {
   };
 
   // 사용자 여행 포인트 생성
-  const createTravelPoints = () => {
+  const createTravelPoints = useCallback(() => {
     return Object.entries(userTravelData).map(([countryEnglishName, data]) => {
       const style = getVisitStyle(data.visits);
       const displayCountryName = countryData[countryEnglishName] ? `${countryData[countryEnglishName].koreanName} (${countryEnglishName})` : countryEnglishName;
@@ -315,10 +315,10 @@ const UltraRealisticGlobe = () => {
         trips: data.trips
       };
     });
-  };
+  }, [userTravelData]);
 
   // 여행 경로 생성 (날짜 순서대로 연결)
-  const createTravelRoutes = () => {
+  const createTravelRoutes = useCallback(() => {
     const allTripsFlat = [];
     Object.entries(userTravelData).forEach(([countryEnglishName, data]) => {
       data.trips.forEach(trip => {
@@ -545,7 +545,7 @@ const UltraRealisticGlobe = () => {
     });
 
     return routes;
-  };
+  }, [userTravelData, user, homeCountry]);
 
   // 여행지 수정 함수
   const updateTravelDestination = async () => {
