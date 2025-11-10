@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd travel-app && npm install && npm run build",
+  "buildCommand": "cd travel-app && npm install --legacy-peer-deps && npm run build",
   "outputDirectory": "travel-app/build",
-  "installCommand": "cd travel-app && npm install",
+  "installCommand": "cd travel-app && npm install --legacy-peer-deps",
   "framework": null,
   "rewrites": [
     {
