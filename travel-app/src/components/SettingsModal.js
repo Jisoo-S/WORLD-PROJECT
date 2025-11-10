@@ -286,7 +286,7 @@ const SettingsModal = ({ showSettings, setShowSettings, user, homeCountry, setHo
             // 3. 사용자 계정 삭제
             const { data: { session } } = await supabase.auth.getSession();
             if (session?.access_token) {
-              const { data, error: deleteError } = await supabase.functions.invoke('delete-user', {
+              const { error: deleteError } = await supabase.functions.invoke('delete-user', {
                 headers: {
                   Authorization: `Bearer ${session.access_token}`
                 }

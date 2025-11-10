@@ -3,15 +3,6 @@ import React, { useState } from 'react';
 const CityButton = ({ city, cityTrips, onDeleteCityTrip, onEditTrip, country }) => {
   const [showDates, setShowDates] = useState(false);
 
-  // Helper function to calculate days between two dates
-  const calculateDays = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end day
-    return diffDays;
-  };
-
   // 여행 기간을 시작일 기준으로 오름차순 정렬
   const sortedCityTrips = [...cityTrips].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 

@@ -45,7 +45,7 @@ const UltraRealisticGlobe = () => {
     endDate: ''
   });
   const [showDateErrorModal, setShowDateErrorModal] = useState(false);
-  const [showGlobeControlsOnMobile, setShowGlobeControlsOnMobile] = useState(true);
+  const [, setShowGlobeControlsOnMobile] = useState(true);
   const [showContinentPanel, setShowContinentPanel] = useState(false);
   const [editingTrip, setEditingTrip] = useState(null);
   const [showAllTrips, setShowAllTrips] = useState(false);
@@ -699,64 +699,6 @@ const UltraRealisticGlobe = () => {
     setShowAddTravel(false);
   };
 
-  // 여행지 (도시별 여행) 삭제 함수 (모달에서 직접 삭제용)
-  const directDeleteCityTrip = async (countryEnglishName, tripToDelete) => {
-    setUserTravelData(prev => {
-      const newData = { ...prev };
-      const countryDataForDeletion = newData[countryEnglishName];
-
-      if (countryDataForDeletion) {
-        const updatedTrips = countryDataForDeletion.trips.filter(trip =>
-          !(trip.startDate === tripToDelete.startDate && 
-            trip.endDate === tripToDelete.endDate && 
-            JSON.stringify(trip.cities) === JSON.stringify(tripToDelete.cities))
-        );
-
-        if (updatedTrips.length === 0) {
-          delete newData[countryEnglishName];
-          // selectedCountry가 삭제된 국가와 같으면 null로 설정
-          if (selectedCountry && selectedCountry.country === countryEnglishName) {
-            setSelectedCountry(null);
-            if (window.innerWidth <= 768) {
-              setShowGlobeControlsOnMobile(true);
-            }
-          }
-        } else {
-          const remainingCities = new Set();
-          updatedTrips.forEach(trip => {
-            trip.cities.forEach(city => remainingCities.add(city));
-          });
-          
-          const allEndDates = updatedTrips.map(trip => new Date(trip.endDate));
-          const latestEndDate = allEndDates.length > 0 ? new Date(Math.max(...allEndDates)).toISOString().split('T')[0] : '';
-
-          newData[countryEnglishName] = {
-            ...countryDataForDeletion,
-            visits: updatedTrips.length,
-            cities: Array.from(remainingCities),
-            trips: updatedTrips,
-            lastVisit: latestEndDate,
-          };
-          
-          // selectedCountry가 수정된 국가와 같으면 업데이트
-          if (selectedCountry && selectedCountry.country === countryEnglishName) {
-            const style = getVisitStyle(updatedTrips.length);
-            setSelectedCountry({
-              ...newData[countryEnglishName],
-              country: countryEnglishName,
-              displayCountry: countryData[countryEnglishName] ? `${countryData[countryEnglishName].koreanName} (${countryEnglishName})` : countryEnglishName,
-              color: style.color
-            });
-          }
-        }
-      }
-      return newData;
-    });
-
-    // Supabase에서 삭제
-    await deleteFromSupabase(countryEnglishName, tripToDelete);
-  };
-  
   // 여행지 (도시별 여행) 삭제 함수 (모달 확인 후 삭제용)
   const deleteCityTrip = async (tripToDelete) => {
     // 삭제 데이터를 저장하고 확인 모달 열기
@@ -840,6 +782,7 @@ const UltraRealisticGlobe = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const currentContainer = containerRef.current;
     let globeInstance = null;
     let mounted = true;
 
@@ -1040,11 +983,11 @@ const UltraRealisticGlobe = () => {
         }
       }
       
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      if (currentContainer) {
+        currentContainer.innerHTML = '';
       }
     };
-  }, [globeMode]); // userTravelData를 dependency에서 제거하여 로딩 화면 방지
+  }, [globeMode, createTravelPoints, createTravelRoutes, isInitialLoad]); // userTravelData를 dependency에서 제거하여 로딩 화면 방지
 
   // userTravelData, user, homeCountry가 변경되면 지구본 데이터만 업데이트 (로딩 화면 없이)
   useEffect(() => {
@@ -1059,7 +1002,7 @@ const UltraRealisticGlobe = () => {
     // 경로 데이터 업데이트
     const routes = createTravelRoutes();
     globe.arcsData(routes);
-  }, [userTravelData, user, homeCountry]);
+  }, [userTravelData, user, homeCountry, createTravelPoints, createTravelRoutes]);
 
   // 컨트롤 함수들
   const goToCountry = (countryEnglishName) => {
